@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mapbox_flutter/src/helpers/helpers.dart';
+import 'package:mapbox_flutter/src/pages/gps_access_page.dart';
 import 'package:mapbox_flutter/src/pages/map_page.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -25,8 +26,9 @@ class _LoadingPageState extends State<LoadingPage> {
   Future checkGpsLocation(BuildContext context) async{
     // TODO permiso gps
     // TODO enable gps
-    await Future.delayed(Duration(milliseconds: 1000));
-    Navigator.pushReplacement(context, navigateFadeIn(context, MapPage()));
+    await Future.delayed(Duration(milliseconds: 100));
+    Navigator.pushReplacement(context, navigateFadeIn(context, GpsAccessPage()));
+    // Navigator.pushReplacement(context, navigateFadeIn(context, MapPage()));
 
   }
 }

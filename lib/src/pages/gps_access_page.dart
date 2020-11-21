@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -7,11 +6,12 @@ class GpsAccessPage extends StatefulWidget {
   _GpsAccessPageState createState() => _GpsAccessPageState();
 }
 
-class _GpsAccessPageState extends State<GpsAccessPage> with WidgetsBindingObserver{
+class _GpsAccessPageState extends State<GpsAccessPage>
+    with WidgetsBindingObserver {
+  bool popup = false;
 
   @override
   void initState() {
-
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -24,10 +24,10 @@ class _GpsAccessPageState extends State<GpsAccessPage> with WidgetsBindingObserv
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    if(state == AppLifecycleState.resumed){
-        if(await Permission.location.isGranted){
-          Navigator.pushReplacementNamed(context, '/loading');
-        }
+    if (state == AppLifecycleState.resumed && !popup) {
+      if (await Permission.location.isGranted) {
+        Navigator.pushReplacementNamed(context, '/loading');
+      }
     }
   }
 
@@ -40,11 +40,13 @@ class _GpsAccessPageState extends State<GpsAccessPage> with WidgetsBindingObserv
           children: [
             Text('Es Necesario activar el gps'),
             MaterialButton(
-              onPressed: () async{
+              onPressed: () async {
                 // verificar permisos
+                popup = true;
                 final status = await Permission.location.request();
-              this.gpsAccess(status);
-              print(status);
+                await this.gpsAccess(status);
+                popup = false;
+                print(status);
               },
               child: Text(
                 'Solicitar Acesso',
@@ -54,7 +56,6 @@ class _GpsAccessPageState extends State<GpsAccessPage> with WidgetsBindingObserv
               shape: StadiumBorder(),
               elevation: 0,
               splashColor: Colors.transparent,
-
             )
           ],
         ),
@@ -62,14 +63,12 @@ class _GpsAccessPageState extends State<GpsAccessPage> with WidgetsBindingObserv
     );
   }
 
-  void gpsAccess(PermissionStatus permissionStatus){
-    switch(permissionStatus){
-      
+  Future gpsAccess(PermissionStatus permissionStatus) async {
+    switch (permissionStatus) {
       case PermissionStatus.granted:
-        Navigator.pushReplacementNamed(context, '/map');
+        await Navigator.pushReplacementNamed(context, '/map');
         break;
       case PermissionStatus.denied:
-
         break;
       case PermissionStatus.restricted:
         // TODO: Handle this case.
@@ -82,5 +81,4 @@ class _GpsAccessPageState extends State<GpsAccessPage> with WidgetsBindingObserv
         break;
     }
   }
-
 }

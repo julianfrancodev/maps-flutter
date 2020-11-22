@@ -45,6 +45,7 @@ class _MapPageState extends State<MapPage> {
       initialCameraPosition: cameraPosition,
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
     );
   }
 }

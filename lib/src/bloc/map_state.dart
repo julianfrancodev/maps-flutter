@@ -1,6 +1,10 @@
 part of 'map_bloc.dart';
 
 @immutable
-abstract class MapState {}
+class MapState {
+  final bool readyMap;
 
-class MapInitial extends MapState {}
+  MapState({this.readyMap = false});
+
+  MapState copyWith({bool readyMap}) => MapState(readyMap: readyMap ?? this.readyMap);
+}

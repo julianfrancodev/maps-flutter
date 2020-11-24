@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mapbox_flutter/src/bloc/map_bloc.dart';
 import 'package:mapbox_flutter/src/bloc/my_location_bloc.dart';
+import 'package:mapbox_flutter/src/widgets/widgets.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -34,6 +35,12 @@ class _MapPageState extends State<MapPage> {
         builder: (BuildContext context, state) {
           return renderMap(state);
         },
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          BtnLocation(),
+        ],
       ),
     );
   }

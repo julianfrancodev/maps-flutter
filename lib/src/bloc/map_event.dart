@@ -4,3 +4,10 @@ part of 'map_bloc.dart';
 abstract class MapEvent {}
 
 class OnMapLoaded extends MapEvent{}
+
+class OnLocationUpdate extends MapEvent{
+  final LatLng location;
+
+  OnLocationUpdate(this.location);
+
+}

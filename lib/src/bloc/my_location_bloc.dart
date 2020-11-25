@@ -19,7 +19,6 @@ class MyLocationBloc extends Bloc<MyLocationEvent, MyLocationState> {
             desiredAccuracy: Geolocator.LocationAccuracy.high,
             distanceFilter: 10)
         .listen((Geolocator.Position position) {
-      print(position);
       final newLocation = new LatLng(position.latitude, position.longitude);
       add(OnLocationChange(newLocation));
     });

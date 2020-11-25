@@ -48,6 +48,9 @@ class _MapPageState extends State<MapPage> {
   Widget renderMap(MyLocationState myLocationState) {
     if (!myLocationState.validateLocation) return Text('Location...');
     final mapBloc = BlocProvider.of<MapBloc>(context);
+
+    mapBloc.add(OnLocationUpdate(myLocationState.location));
+
     final CameraPosition cameraPosition =
         new CameraPosition(target: myLocationState.location, zoom: 15);
     return GoogleMap(
@@ -56,6 +59,7 @@ class _MapPageState extends State<MapPage> {
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       onMapCreated:mapBloc.initMap,
+      polylines: mapBloc.state.polylines.values.toSet() ,
     );
   }
 }

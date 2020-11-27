@@ -45,10 +45,16 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       yield* this._onLocationUpdate(event);
     } else if (event is OnDrawRoute) {
       yield* this._onDrawRoute(event);
+    } else if (event is OnFollowLocation) {
+      yield* this._onFollowLocation(event);
     }
   }
 
   Stream<MapState> _onLocationUpdate(OnLocationUpdate event) async* {
+    if (state.followLocation) {
+      this.moveCamera(event.location);
+    }
+
     final List<LatLng> points = [...this._myRoute.points, event.location];
     this._myRoute = this._myRoute.copyWith(pointsParam: points);
 
@@ -70,5 +76,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     yield state.copyWith(
         polylines: currentPolylines, drawRoute: !state.drawRoute);
+  }
+
+  Stream<MapState> _onFollowLocation(OnFollowLocation event) async* {
+    print(event);
+    if (!state.followLocation) {
+      this.moveCamera(this._myRoute.points[this._myRoute.points.length - 1]);
+    }
+    yield state.copyWith(followLocation: !state.followLocation);
   }
 }

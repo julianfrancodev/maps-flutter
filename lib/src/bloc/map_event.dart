@@ -7,6 +7,8 @@ class OnMapLoaded extends MapEvent{}
 
 class OnDrawRoute extends MapEvent{}
 
+class OnFollowLocation extends MapEvent{}
+
 class OnLocationUpdate extends MapEvent{
   final LatLng location;
 

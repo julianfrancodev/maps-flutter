@@ -61,7 +61,13 @@ class _MapPageState extends State<MapPage> {
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       onMapCreated:mapBloc.initMap,
-      polylines: mapBloc.state.polylines.values.toSet() ,
+      polylines: mapBloc.state.polylines.values.toSet(),
+      onCameraMove: (cameraPosition){
+        mapBloc.add(OnMoveMap(cameraPosition.target));
+      },
+      onCameraIdle: (){
+        print("MapIdle");
+      },
     );
   }
 }

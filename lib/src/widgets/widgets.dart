@@ -6,3 +6,4 @@ import 'package:mapbox_flutter/src/bloc/my_location_bloc.dart';
 part 'btn_location.dart';
 part 'btn_my_route.dart';
 part 'btn_follow_location.dart';
+part 'searchbar_widget.dart';

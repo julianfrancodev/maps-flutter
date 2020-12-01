@@ -31,10 +31,15 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MyLocationBloc, MyLocationState>(
-        builder: (BuildContext context, state) {
-          return renderMap(state);
-        },
+      body: Stack(
+        children: <Widget>[
+          BlocBuilder<MyLocationBloc, MyLocationState>(
+            builder: (BuildContext context, state) {
+              return renderMap(state);
+            },
+          ),
+          Positioned(top: 20, child: SearchBarWidget()),
+        ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -60,12 +65,12 @@ class _MapPageState extends State<MapPage> {
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
-      onMapCreated:mapBloc.initMap,
+      onMapCreated: mapBloc.initMap,
       polylines: mapBloc.state.polylines.values.toSet(),
-      onCameraMove: (cameraPosition){
+      onCameraMove: (cameraPosition) {
         mapBloc.add(OnMoveMap(cameraPosition.target));
       },
-      onCameraIdle: (){
+      onCameraIdle: () {
         print("MapIdle");
       },
     );

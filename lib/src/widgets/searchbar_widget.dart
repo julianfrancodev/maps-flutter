@@ -10,9 +10,11 @@ class SearchBarWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 30),
         width: width,
         child: GestureDetector(
-          onTap: (){
+          onTap: () async {
             print("Searching");
-            showSearch(context: context, delegate: SearchDestination());
+            final SearchResutl result = await showSearch(
+                context: context, delegate: SearchDestination());
+            this.returnSearch(result);
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 13),
@@ -26,11 +28,20 @@ class SearchBarWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.black12, blurRadius: 5, offset: Offset(0, 5))
+                      color: Colors.black12,
+                      blurRadius: 5,
+                      offset: Offset(0, 5))
                 ]),
           ),
         ),
       ),
     );
   }
+
+  void returnSearch(SearchResutl resutl){
+    print(resutl.cancel);
+    print(resutl.manual);
+     if(resutl.cancel) return;
+  }
+
 }

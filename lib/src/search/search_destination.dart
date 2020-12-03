@@ -1,9 +1,7 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:mapbox_flutter/src/models/search_result.dart';
 
-class SearchDestination extends SearchDelegate{
-
+class SearchDestination extends SearchDelegate<SearchResutl> {
   @override
   final String searchFieldLabel;
 
@@ -14,25 +12,23 @@ class SearchDestination extends SearchDelegate{
     return [
       IconButton(
         icon: Icon(Icons.clear),
-        onPressed: ()=> this.query = "",
+        onPressed: () => this.query = "",
       )
     ];
   }
 
   @override
   Widget buildLeading(BuildContext context) {
-
     //todo return something
 
     return IconButton(
       icon: Icon(Icons.arrow_back_ios),
-      onPressed: () => this.close(context, null),
+      onPressed: () => this.close(context, SearchResutl(cancel: true)),
     );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-
     return Text("Build Results");
   }
 
@@ -40,19 +36,17 @@ class SearchDestination extends SearchDelegate{
   Widget buildSuggestions(BuildContext context) {
     return ListView(
       children: [
-      ListTile(
-        leading: Icon(Icons.location_on_outlined),
-        title: Text("Colocar Ubication Manualmente"),
-        onTap: (){
+        ListTile(
+          leading: Icon(Icons.location_on_outlined),
+          title: Text("Colocar Ubication Manualmente"),
+          onTap: () {
+            // todo return something
 
-          // todo return something
-
-          print("Manualmente");
-          this.close(context, null);
-        },
-      )
+            print("Manualmente");
+            this.close(context, SearchResutl(cancel: false, manual: true));
+          },
+        )
       ],
     );
   }
-  
 }

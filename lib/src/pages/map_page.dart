@@ -38,7 +38,9 @@ class _MapPageState extends State<MapPage> {
               return renderMap(state);
             },
           ),
-          Positioned(top: 20, child: SearchBarWidget()),
+          // todo  Switching with select manual
+          // Positioned(top: 20, child: SearchBarWidget()),
+          PinnedManual(),
         ],
       ),
       floatingActionButton: Column(

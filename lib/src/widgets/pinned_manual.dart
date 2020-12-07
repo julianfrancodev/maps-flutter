@@ -3,6 +3,21 @@ part of "widgets.dart";
 class PinnedManual extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state){
+        if(state.manualSelection){
+          return _BuildManualPin();
+        }else{
+          return Container();
+        }
+      },
+    );
+  }
+}
+
+class _BuildManualPin extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
 
     return Stack(
@@ -18,7 +33,8 @@ class PinnedManual extends StatelessWidget {
                 color: Colors.black87,
               ),
               onPressed: () {
-                // todo do something
+                context.bloc<SearchBloc>().add(OnDisablePinManual());
+                
               },
             ),
           ),

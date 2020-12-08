@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:mapbox_flutter/src/bloc/my_location_bloc.dart';
 import 'package:mapbox_flutter/src/bloc/search_bloc.dart';
 import 'package:mapbox_flutter/src/models/search_result.dart';
 import 'package:mapbox_flutter/src/search/search_destination.dart';
+import 'package:mapbox_flutter/src/services/traffic_service.dart';
 part 'btn_location.dart';
 part 'btn_my_route.dart';
 part 'btn_follow_location.dart';

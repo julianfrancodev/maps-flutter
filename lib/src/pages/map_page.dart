@@ -38,7 +38,6 @@ class _MapPageState extends State<MapPage> {
               return renderMap(state);
             },
           ),
-
           Positioned(top: 20, child: SearchBarWidget()),
           PinnedManual(),
         ],
@@ -62,19 +61,22 @@ class _MapPageState extends State<MapPage> {
 
     final CameraPosition cameraPosition =
         new CameraPosition(target: myLocationState.location, zoom: 15);
-    return GoogleMap(
-      initialCameraPosition: cameraPosition,
-      myLocationEnabled: true,
-      myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
-      onMapCreated: mapBloc.initMap,
-      polylines: mapBloc.state.polylines.values.toSet(),
-      onCameraMove: (cameraPosition) {
-        mapBloc.add(OnMoveMap(cameraPosition.target));
-      },
-      onCameraIdle: () {
-        print("MapIdle");
-      },
-    );
+
+    return BlocBuilder<MapBloc, MapState>(builder: (context, _) {
+      return GoogleMap(
+        initialCameraPosition: cameraPosition,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: false,
+        zoomControlsEnabled: false,
+        onMapCreated: mapBloc.initMap,
+        polylines: mapBloc.state.polylines.values.toSet(),
+        onCameraMove: (cameraPosition) {
+          mapBloc.add(OnMoveMap(cameraPosition.target));
+        },
+        onCameraIdle: () {
+          print("MapIdle");
+        },
+      );
+    });
   }
 }

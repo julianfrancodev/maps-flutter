@@ -18,6 +18,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   Polyline _myRoute = new Polyline(
       polylineId: PolylineId("my_route"), width: 4, color: Colors.transparent);
 
+  Polyline _myRouteDestiny = new Polyline(
+      polylineId: PolylineId("my_route_destiny"),
+      width: 4,
+      color: Colors.black87);
+
   void initMap(GoogleMapController googleMapController) {
     if (!state.readyMap) {
       this._mapController = googleMapController;
@@ -50,6 +55,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     } else if (event is OnMoveMap) {
       print(event.centralLocation);
       yield state.copyWith(centralLocation: event.centralLocation);
+    } else if (event is OnCreateRouteStartDestiny) {
+      yield* _onCreateRouteStartDestiny(event);
     }
   }
 
@@ -87,5 +94,19 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       this.moveCamera(this._myRoute.points[this._myRoute.points.length - 1]);
     }
     yield state.copyWith(followLocation: !state.followLocation);
+  }
+
+  Stream<MapState> _onCreateRouteStartDestiny(
+      OnCreateRouteStartDestiny event) async* {
+    this._myRouteDestiny =
+        this._myRouteDestiny.copyWith(pointsParam: event.routeCoords);
+
+    final currentPolylines = state.polylines;
+
+    currentPolylines['my_route_destiny'] = this._myRouteDestiny;
+
+    yield state.copyWith(polylines: currentPolylines
+        // todo add bookmarks
+        );
   }
 }

@@ -82,8 +82,9 @@ class _BuildManualPin extends StatelessWidget {
 
   void calcDestination(BuildContext context) async {
     final TrafficService trafficService = new TrafficService();
+    final mapBloc = context.bloc<MapBloc>();
     final start = context.bloc<MyLocationBloc>().state.location;
-    final end = context.bloc<MapBloc>().state.centralLocation;
+    final end = mapBloc.state.centralLocation;
 
     final trafficResponse =
         await trafficService.getCoordsStartDestination(start, end);
@@ -94,7 +95,13 @@ class _BuildManualPin extends StatelessWidget {
     final distance = trafficResponse.routes[0].distance;
     final points = Poly.Polyline.Decode(encodedString: geometry, precision: 6)
         .decodedCoords;
+    final List<LatLng> routeCords =
+        points.map((point) => LatLng(point[0], point[1])).toList();
 
-    final temp = points;
+
+    mapBloc.add(OnCreateRouteStartDestiny(routeCords, distance, duration));
+
+
+
   }
 }

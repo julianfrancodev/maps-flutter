@@ -108,7 +108,7 @@ packages:
       name: geolocator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.12"
+    version: "6.1.13"
   geolocator_platform_interface:
     dependency: transitive
     description:
@@ -186,6 +186,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  polyline:
+    dependency: "direct main"
+    description:
+      name: polyline
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   provider:
     dependency: transitive
     description:

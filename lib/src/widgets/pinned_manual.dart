@@ -4,10 +4,10 @@ class PinnedManual extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SearchBloc, SearchState>(
-      builder: (context, state){
-        if(state.manualSelection){
+      builder: (context, state) {
+        if (state.manualSelection) {
           return _BuildManualPin();
-        }else{
+        } else {
           return Container();
         }
       },
@@ -36,7 +36,6 @@ class _BuildManualPin extends StatelessWidget {
                 ),
                 onPressed: () {
                   context.bloc<SearchBloc>().add(OnDisablePinManual());
-                  
                 },
               ),
             ),
@@ -49,7 +48,6 @@ class _BuildManualPin extends StatelessWidget {
               offset: Offset(0, -12),
               child: BounceInDown(
                 from: 200,
-
                 child: Icon(
                   Icons.location_on,
                   size: 40,
@@ -82,13 +80,21 @@ class _BuildManualPin extends StatelessWidget {
     );
   }
 
-  void calcDestination(BuildContext context)async{
+  void calcDestination(BuildContext context) async {
     final TrafficService trafficService = new TrafficService();
     final start = context.bloc<MyLocationBloc>().state.location;
     final end = context.bloc<MapBloc>().state.centralLocation;
 
-    await trafficService.getCoordsStartDestination(start, end);
+    final trafficResponse =
+        await trafficService.getCoordsStartDestination(start, end);
 
+    // decode points from geometry
+    final geometry = trafficResponse.routes[0].geometry;
+    final duration = trafficResponse.routes[0].duration;
+    final distance = trafficResponse.routes[0].distance;
+    final points = Poly.Polyline.Decode(encodedString: geometry, precision: 6)
+        .decodedCoords;
+
+    final temp = points;
   }
-
 }

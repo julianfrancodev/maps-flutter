@@ -8,6 +8,7 @@ import 'package:mapbox_flutter/src/bloc/search_bloc.dart';
 import 'package:mapbox_flutter/src/models/search_result.dart';
 import 'package:mapbox_flutter/src/search/search_destination.dart';
 import 'package:mapbox_flutter/src/services/traffic_service.dart';
+import 'package:polyline/polyline.dart' as Poly;
 part 'btn_location.dart';
 part 'btn_my_route.dart';
 part 'btn_follow_location.dart';

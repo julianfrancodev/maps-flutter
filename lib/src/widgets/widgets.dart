@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mapbox_flutter/src/bloc/map_bloc.dart';
 import 'package:mapbox_flutter/src/bloc/my_location_bloc.dart';
 import 'package:mapbox_flutter/src/bloc/search_bloc.dart';
+import 'package:mapbox_flutter/src/helpers/helpers.dart';
 import 'package:mapbox_flutter/src/models/search_result.dart';
 import 'package:mapbox_flutter/src/search/search_destination.dart';
 import 'package:mapbox_flutter/src/services/traffic_service.dart';

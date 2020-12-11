@@ -81,6 +81,9 @@ class _BuildManualPin extends StatelessWidget {
   }
 
   void calcDestination(BuildContext context) async {
+
+    calcAlert(context);
+
     final TrafficService trafficService = new TrafficService();
     final mapBloc = context.bloc<MapBloc>();
     final start = context.bloc<MyLocationBloc>().state.location;
@@ -101,7 +104,11 @@ class _BuildManualPin extends StatelessWidget {
 
     mapBloc.add(OnCreateRouteStartDestiny(routeCords, distance, duration));
 
+    Navigator.of(context).pop();
 
+    // todo remove pin and back button
+
+    context.bloc<SearchBloc>().add(OnDisablePinManual());
 
   }
 }

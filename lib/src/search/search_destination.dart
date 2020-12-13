@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mapbox_flutter/src/models/search_response.dart';
 import 'package:mapbox_flutter/src/models/search_result.dart';
 import 'package:mapbox_flutter/src/services/traffic_service.dart';
 
@@ -35,25 +36,71 @@ class SearchDestination extends SearchDelegate<SearchResutl> {
 
   @override
   Widget buildResults(BuildContext context) {
-    this._trafficService.getResultsByQuery(this.query.trim(), this.proximity);
-    return Text("Build Results");
+    return this._buildSuggestionsResult();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return ListView(
-      children: [
-        ListTile(
-          leading: Icon(Icons.location_on_outlined),
-          title: Text("Colocar Ubication Manualmente"),
-          onTap: () {
-            // todo return something
+    if (this.query.length == 0) {
+      return ListView(
+        children: [
+          ListTile(
+            leading: Icon(Icons.location_on_outlined),
+            title: Text("Colocar Ubication Manualmente"),
+            onTap: () {
+              // todo return something
+              print("Manualmente");
+              this.close(context, SearchResutl(cancel: false, manual: true));
+            },
+          )
+        ],
+      );
+    }
 
-            print("Manualmente");
-            this.close(context, SearchResutl(cancel: false, manual: true));
+    return this._buildSuggestionsResult();
+  }
+
+  Widget _buildSuggestionsResult() {
+    if (this.query.length == 0) {
+      return Container();
+    }
+
+    return FutureBuilder(
+      future: this
+          ._trafficService
+          .getResultsByQuery(this.query.trim(), this.proximity),
+      builder: (BuildContext context, AsyncSnapshot<SearchResponse> snapshot) {
+        if (!snapshot.hasData) {
+          print(snapshot);
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        final places = snapshot.data.features;
+
+        if(places.length == 0){
+          return ListTile(
+            title: Text("No hay resultados para $query"),
+          );
+        }
+
+        return ListView.separated(
+          itemBuilder: (_, index) {
+            final place = places[index];
+            return ListTile(
+              leading: Icon(Icons.place),
+              title: Text(place.textEs),
+              subtitle: Text(place.placeNameEs),
+              onTap: () {
+                print(place);
+              },
+            );
           },
-        )
-      ],
+          separatorBuilder: (_, i) => Divider(),
+          itemCount: places.length,
+        );
+      },
     );
   }
 }

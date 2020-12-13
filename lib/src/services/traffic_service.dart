@@ -17,14 +17,15 @@ class TrafficService {
   final String baseUrlDir = "https://api.mapbox.com/directions/v5";
   final String baseUrlGeo = "https://api.mapbox.com/geocoding/v5";
   final String apiKey =
-      "pk.eyJ1IjoianVsaWFuZnJhbmNvYWx2YXJhZG8iLCJhIjoiY2tmNzlrbWU3MDA5dTMxbXY5YXBnN2Z3NiJ9.of6WhCbnukPIEsLcxHUElw";
+      "pk.eyJ1IjoianVsaWFuZnJhbmNvYWx2YXJhZG8iLCJhIjoiY2tpbWtqd3piMDFqODJxczBtdWx1cXkyOCJ9.Gycz5CVzBdt9--ZytER5dg";
 
-  Future<DrivingResponse> getCoordsStartDestination(LatLng start, LatLng end) async {
+  Future<DrivingResponse> getCoordsStartDestination(
+      LatLng start, LatLng end) async {
     print(start);
     print(end);
     final String coordString =
         "${start.longitude},${start.latitude};${end.longitude},${end.latitude}";
-    final String url = "${baseUrlDir}/mapbox/driving/${coordString}";
+    final String url = "${baseUrlDir}/mapbox/driving/$coordString";
 
     final resp = await this._dio.get(url, queryParameters: {
       "alternatives": "true",
@@ -39,22 +40,24 @@ class TrafficService {
     return data;
   }
 
+  Future<SearchResponse> getResultsByQuery(
+      String search, LatLng proximity) async {
+    final String url = "${this.baseUrlGeo}/mapbox.places/$search.json";
 
-  Future<SearchResponse> getResultsByQuery(String search, LatLng proximity)async{
-    final String url = "${this.baseUrlGeo}/mapbox.places/${search}.json";
+    try{
+      final resp = await this._dio.get(url, queryParameters: {
+        "access_token": "${this.apiKey}",
+        "autocomplete": "true",
+        "proximity": "${proximity.longitude},${proximity.latitude}",
+        "language": "es",
+      });
 
-    final resp = await this._dio.get(url, queryParameters: {
-      "acess_token":this.apiKey,
-      "autocomplete":"true",
-      "proximity":"${proximity.latitude},${proximity.longitude}",
-      "language": "es",
-    });
+      final searchResponse = searchResponseFromJson(resp.data);
 
-    final searchResponse = searchResponseFromJson(resp.data);
-
-
-    return searchResponse;
+      return searchResponse;
+    }catch(e){
+      return SearchResponse(features: []);
+    }
 
   }
-
 }

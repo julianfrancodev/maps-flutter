@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mapbox_flutter/src/helpers/debouncer.dart';
 import 'package:mapbox_flutter/src/models/driving_response.dart';
 import 'package:mapbox_flutter/src/models/search_response.dart';
 
@@ -14,6 +17,19 @@ class TrafficService {
   }
 
   final Dio _dio = new Dio();
+  final debouncer = Debouncer<String>(duration: Duration(milliseconds: 500));
+  final StreamController<SearchResponse> _suggestionsStreamController =
+      new StreamController<SearchResponse>.broadcast();
+
+  Stream<SearchResponse> get suggestionsStream =>
+      this._suggestionsStreamController.stream;
+
+  @override
+  bool operator ==(Object other) {
+    // TODO: implement ==
+    return super == other;
+  }
+
   final String baseUrlDir = "https://api.mapbox.com/directions/v5";
   final String baseUrlGeo = "https://api.mapbox.com/geocoding/v5";
   final String apiKey =
@@ -43,8 +59,8 @@ class TrafficService {
   Future<SearchResponse> getResultsByQuery(
       String search, LatLng proximity) async {
     final String url = "${this.baseUrlGeo}/mapbox.places/$search.json";
-
-    try{
+    print("searching");
+    try {
       final resp = await this._dio.get(url, queryParameters: {
         "access_token": "${this.apiKey}",
         "autocomplete": "true",
@@ -55,9 +71,22 @@ class TrafficService {
       final searchResponse = searchResponseFromJson(resp.data);
 
       return searchResponse;
-    }catch(e){
+    } catch (e) {
       return SearchResponse(features: []);
     }
+  }
 
+  void getSuggestionsByQuery(String search, LatLng proximity) {
+    debouncer.value = "";
+    debouncer.onValue = (value) async {
+      final resultados = await this.getResultsByQuery(value, proximity);
+      this._suggestionsStreamController.add(resultados);
+    };
+
+    final timer = Timer.periodic(Duration(milliseconds: 200), (_) {
+      debouncer.value = search;
+    });
+
+    Future.delayed(Duration(milliseconds: 201)).then((_) => timer.cancel());
   }
 }

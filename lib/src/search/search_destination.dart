@@ -64,11 +64,12 @@ class SearchDestination extends SearchDelegate<SearchResutl> {
     if (this.query.length == 0) {
       return Container();
     }
+    this
+        ._trafficService
+        .getSuggestionsByQuery(this.query.trim(), this.proximity);
 
-    return FutureBuilder(
-      future: this
-          ._trafficService
-          .getResultsByQuery(this.query.trim(), this.proximity),
+    return StreamBuilder(
+      stream: this._trafficService.suggestionsStream,
       builder: (BuildContext context, AsyncSnapshot<SearchResponse> snapshot) {
         if (!snapshot.hasData) {
           print(snapshot);
@@ -79,7 +80,7 @@ class SearchDestination extends SearchDelegate<SearchResutl> {
 
         final places = snapshot.data.features;
 
-        if(places.length == 0){
+        if (places.length == 0) {
           return ListTile(
             title: Text("No hay resultados para $query"),
           );

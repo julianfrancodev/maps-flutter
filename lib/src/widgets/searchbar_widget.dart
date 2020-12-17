@@ -32,9 +32,11 @@ class SearchBarWidget extends StatelessWidget {
                 .bloc<MyLocationBloc>()
                 .state
                 .location;
+
+            final history = context.bloc<SearchBloc>().state.history;
             print("Searching");
             final SearchResutl result = await showSearch(
-                context: context, delegate: SearchDestination(proximity));
+                context: context, delegate: SearchDestination(proximity, history));
             this.returnSearch(context, result);
           },
           child: Container(
@@ -97,5 +99,11 @@ class SearchBarWidget extends StatelessWidget {
     mapBloc.add(OnCreateRouteStartDestiny(routeCoords, distance, duration));
 
     Navigator.of(context).pop();
+
+    // add to history
+
+    final searchBloc = context.watch<SearchBloc>();
+
+    searchBloc.add(OnAddHistory(resutl));
   }
 }

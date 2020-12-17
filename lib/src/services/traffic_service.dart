@@ -89,4 +89,8 @@ class TrafficService {
 
     Future.delayed(Duration(milliseconds: 201)).then((_) => timer.cancel());
   }
+
+  void closeStream() {
+    _suggestionsStreamController.close();
+  }
 }

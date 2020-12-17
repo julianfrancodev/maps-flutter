@@ -108,7 +108,7 @@ class _BuildManualPin extends StatelessWidget {
 
     // todo remove pin and back button
 
-    context.bloc<SearchBloc>().add(OnDisablePinManual());
+    context.read<SearchBloc>().add(OnDisablePinManual());
 
   }
 }

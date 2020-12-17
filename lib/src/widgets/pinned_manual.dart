@@ -35,6 +35,7 @@ class _BuildManualPin extends StatelessWidget {
                   color: Colors.black87,
                 ),
                 onPressed: () {
+                  context.bloc<MyLocationBloc>().disposeFollowing();
                   context.bloc<SearchBloc>().add(OnDisablePinManual());
                 },
               ),

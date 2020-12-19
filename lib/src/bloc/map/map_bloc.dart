@@ -105,8 +105,18 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     currentPolylines['my_route_destiny'] = this._myRouteDestiny;
 
-    yield state.copyWith(polylines: currentPolylines
-        // todo add bookmarks
-        );
+    // Markers
+
+    final markerStart =
+        new Marker(markerId: MarkerId("start"), position: event.routeCoords[0]);
+
+    final markerEnd = new Marker(
+        markerId: MarkerId("end"),
+        position: event.routeCoords[event.routeCoords.length -1]);
+    final newMarkers = {...state.markers};
+    newMarkers["start"] = markerStart;
+    newMarkers["end"] = markerEnd;
+
+    yield state.copyWith(polylines: currentPolylines, markers: newMarkers);
   }
 }

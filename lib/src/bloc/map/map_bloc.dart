@@ -107,12 +107,20 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     // Markers
 
-    final markerStart =
-        new Marker(markerId: MarkerId("start"), position: event.routeCoords[0]);
+    final markerStart = new Marker(
+        markerId: MarkerId("start"),
+        position: event.routeCoords[0],
+        infoWindow: InfoWindow(
+            title: "Mi casa",
+            snippet: "Punto Inicial",
+            anchor: Offset(0.5, 0),
+            onTap: () {
+              print("info window tap");
+            }));
 
     final markerEnd = new Marker(
         markerId: MarkerId("end"),
-        position: event.routeCoords[event.routeCoords.length -1]);
+        position: event.routeCoords[event.routeCoords.length - 1]);
     final newMarkers = {...state.markers};
     newMarkers["start"] = markerStart;
     newMarkers["end"] = markerEnd;

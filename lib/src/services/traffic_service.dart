@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mapbox_flutter/src/helpers/debouncer.dart';
 import 'package:mapbox_flutter/src/models/driving_response.dart';
+import 'package:mapbox_flutter/src/models/reverse_query_response.dart';
 import 'package:mapbox_flutter/src/models/search_response.dart';
 
 class TrafficService {
@@ -88,6 +89,19 @@ class TrafficService {
     });
 
     Future.delayed(Duration(milliseconds: 201)).then((_) => timer.cancel());
+  }
+
+  Future<ReverseQueryResponse> getCoordsInfo(LatLng destinyCoords) async {
+    final String url =
+        "${this.baseUrlGeo}/mapbox.places/${destinyCoords.longitude},${destinyCoords.latitude}.json";
+
+    final resp = await this._dio.get(url, queryParameters: {
+      "access_token": "${this.apiKey}",
+      "language": "es",
+    });
+
+    final data = ReverseQueryResponse.fromJson(resp.data);
+
   }
 
   void closeStream() {

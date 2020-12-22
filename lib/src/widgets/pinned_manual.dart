@@ -90,6 +90,9 @@ class _BuildManualPin extends StatelessWidget {
     final start = context.bloc<MyLocationBloc>().state.location;
     final end = mapBloc.state.centralLocation;
 
+    // get destination information
+    trafficService.getCoordsInfo(end);
+
     final trafficResponse =
         await trafficService.getCoordsStartDestination(start, end);
 

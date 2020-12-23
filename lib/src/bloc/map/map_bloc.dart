@@ -111,19 +111,30 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         markerId: MarkerId("start"),
         position: event.routeCoords[0],
         infoWindow: InfoWindow(
-            title: "Mi casa",
-            snippet: "Punto Inicial",
-            anchor: Offset(0.5, 0),
+            title: "Mi Ubicacion",
+            snippet:
+                "Duracion recorrido ${(event.duration / 60).floor()} Minutos",
             onTap: () {
               print("info window tap");
             }));
 
     final markerEnd = new Marker(
+        infoWindow: InfoWindow(
+            title: event.nameDestiny,
+            snippet:
+                "Distancia estimada de ${(event.distance / 100).floor()} Kilometros",
+            onTap: () {
+              print("info window disctance tap");
+            }),
         markerId: MarkerId("end"),
         position: event.routeCoords[event.routeCoords.length - 1]);
     final newMarkers = {...state.markers};
     newMarkers["start"] = markerStart;
     newMarkers["end"] = markerEnd;
+
+    Future.delayed(Duration(milliseconds: 300)).then((value){
+      _mapController.showMarkerInfoWindow(MarkerId("start"));
+    });
 
     yield state.copyWith(polylines: currentPolylines, markers: newMarkers);
   }

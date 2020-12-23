@@ -100,7 +100,9 @@ class TrafficService {
       "language": "es",
     });
 
-    final data = ReverseQueryResponse.fromJson(resp.data);
+    final data = reverseQueryResponseFromJson(resp.data);
+
+    return data;
 
   }
 

@@ -13,8 +13,10 @@ class OnCreateRouteStartDestiny extends MapEvent {
   final List<LatLng> routeCoords;
   final double distance;
   final double duration;
+  final String nameDestiny;
 
-  OnCreateRouteStartDestiny(this.routeCoords, this.distance, this.duration);
+  OnCreateRouteStartDestiny(
+      this.routeCoords, this.distance, this.duration, this.nameDestiny);
 }
 
 class OnMoveMap extends MapEvent {

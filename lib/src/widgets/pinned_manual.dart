@@ -91,7 +91,7 @@ class _BuildManualPin extends StatelessWidget {
     final end = mapBloc.state.centralLocation;
 
     // get destination information
-    trafficService.getCoordsInfo(end);
+    final reverseQueryResponse = await trafficService.getCoordsInfo(end);
 
     final trafficResponse =
         await trafficService.getCoordsStartDestination(start, end);
@@ -100,13 +100,15 @@ class _BuildManualPin extends StatelessWidget {
     final geometry = trafficResponse.routes[0].geometry;
     final duration = trafficResponse.routes[0].duration;
     final distance = trafficResponse.routes[0].distance;
+    final nameDestiny = reverseQueryResponse.features[0].text;
+
     final points = Poly.Polyline.Decode(encodedString: geometry, precision: 6)
         .decodedCoords;
     final List<LatLng> routeCords =
         points.map((point) => LatLng(point[0], point[1])).toList();
 
 
-    mapBloc.add(OnCreateRouteStartDestiny(routeCords, distance, duration));
+    mapBloc.add(OnCreateRouteStartDestiny(routeCords, distance, duration,nameDestiny));
 
     Navigator.of(context).pop();
 

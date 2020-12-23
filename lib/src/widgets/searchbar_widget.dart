@@ -96,9 +96,8 @@ class SearchBarWidget extends StatelessWidget {
     final List<LatLng> routeCoords = points.decodedCoords.map((point) =>
         LatLng(point[0], point[1])).toList();
 
-    mapBloc.add(OnCreateRouteStartDestiny(routeCoords, distance, duration));
-
-    // Navigator.of(context).pop();
+    // todo repare this
+    // mapBloc.add(OnCreateRouteStartDestiny(routeCoords, distance, duration));
 
     // add to history
 

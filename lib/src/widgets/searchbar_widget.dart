@@ -17,10 +17,7 @@ class SearchBarWidget extends StatelessWidget {
   }
 
   Widget buildSearchBar(BuildContext context) {
-    final double width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final double width = MediaQuery.of(context).size.width;
 
     return SafeArea(
       child: Container(
@@ -28,15 +25,13 @@ class SearchBarWidget extends StatelessWidget {
         width: width,
         child: GestureDetector(
           onTap: () async {
-            final proximity = context
-                .bloc<MyLocationBloc>()
-                .state
-                .location;
+            final proximity = context.bloc<MyLocationBloc>().state.location;
 
             final history = context.bloc<SearchBloc>().state.history;
             print("Searching");
             final SearchResutl result = await showSearch(
-                context: context, delegate: SearchDestination(proximity, history));
+                context: context,
+                delegate: SearchDestination(proximity, history));
             this.returnSearch(context, result);
           },
           child: Container(
@@ -77,27 +72,28 @@ class SearchBarWidget extends StatelessWidget {
 
     final mapBloc = context.bloc<MapBloc>();
 
-    final start = context
-        .bloc<MyLocationBloc>()
-        .state
-        .location;
+    final start = context.bloc<MyLocationBloc>().state.location;
 
     final destiny = resutl.position;
 
     final drivingResponse =
-    await trafficService.getCoordsStartDestination(start, destiny);
+        await trafficService.getCoordsStartDestination(start, destiny);
+    final reverseQueryResponse = await trafficService.getCoordsInfo(destiny);
 
     final geometry = drivingResponse.routes[0].geometry;
     final duration = drivingResponse.routes[0].duration;
     final distance = drivingResponse.routes[0].distance;
+    final nameDestiny = reverseQueryResponse.features[0].text;
 
     final points = Poly.Polyline.Decode(encodedString: geometry, precision: 6);
 
-    final List<LatLng> routeCoords = points.decodedCoords.map((point) =>
-        LatLng(point[0], point[1])).toList();
+    final List<LatLng> routeCoords = points.decodedCoords
+        .map((point) => LatLng(point[0], point[1]))
+        .toList();
 
     // todo repare this
-    // mapBloc.add(OnCreateRouteStartDestiny(routeCoords, distance, duration));
+    mapBloc.add(OnCreateRouteStartDestiny(
+        routeCoords, distance, duration, nameDestiny));
 
     // add to history
 

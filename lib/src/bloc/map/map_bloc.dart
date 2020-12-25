@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mapbox_flutter/src/helpers/helpers.dart';
 import 'package:mapbox_flutter/src/themes/map_theme.dart';
 import 'package:meta/meta.dart';
 
@@ -106,9 +107,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     currentPolylines['my_route_destiny'] = this._myRouteDestiny;
 
     // Markers
+    final startIcon = await getNetWorkImageMarker();
 
     final markerStart = new Marker(
         markerId: MarkerId("start"),
+        icon: startIcon,
         position: event.routeCoords[0],
         infoWindow: InfoWindow(
             title: "Mi Ubicacion",
@@ -118,7 +121,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
               print("info window tap");
             }));
 
+    // Icon from start
+    final icon = await getAssetImageMarker();
+
     final markerEnd = new Marker(
+        icon: icon,
         infoWindow: InfoWindow(
             title: event.nameDestiny,
             snippet:
@@ -132,7 +139,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     newMarkers["start"] = markerStart;
     newMarkers["end"] = markerEnd;
 
-    Future.delayed(Duration(milliseconds: 300)).then((value){
+    Future.delayed(Duration(milliseconds: 300)).then((value) {
       _mapController.showMarkerInfoWindow(MarkerId("end"));
     });
 

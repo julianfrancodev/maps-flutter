@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class MarkerStart extends CustomPainter {
+
+  final int minutos;
+
+  MarkerStart(this.minutos);
+
   @override
   void paint(Canvas canvas, Size size) {
     final double circleRadius = 20;
@@ -41,6 +46,54 @@ class MarkerStart extends CustomPainter {
     final blackBox = Rect.fromLTWH(30, 20, 70, 80);
 
     canvas.drawRect(blackBox, paint);
+
+    // draw texts
+
+    TextSpan textSpan = new TextSpan(
+        style: TextStyle(
+            color: Colors.white, fontSize: 30, fontWeight: FontWeight.w400),
+        text: "${this.minutos}");
+
+    TextPainter textPainter = new TextPainter(
+        text: textSpan,
+        textDirection: TextDirection.ltr,
+        textAlign: TextAlign.center)
+      ..layout(maxWidth: 70, minWidth: 70);
+
+    textPainter.paint(canvas, Offset(30, 35));
+
+    // minutes
+
+    TextSpan textSpanMin = new TextSpan(
+        style: TextStyle(
+            color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+        text: "Min");
+
+     textPainter = new TextPainter(
+        text: textSpanMin,
+        textDirection: TextDirection.ltr,
+        textAlign: TextAlign.center)
+      ..layout(maxWidth: 70, minWidth: 70);
+
+    textPainter.paint(canvas, Offset(30, 67));
+
+    // My location
+
+    textSpan = new TextSpan(
+        style: TextStyle(
+            color: Colors.black87 , fontSize: 22, fontWeight: FontWeight.w400),
+        text: "Mi Ubicacion");
+
+    textPainter = new TextPainter(
+        text: textSpan,
+        textDirection: TextDirection.ltr,
+        textAlign: TextAlign.center)
+      ..layout(maxWidth: size.width - 130);
+
+    textPainter.paint(canvas, Offset(150, 50));
+
+
+
   }
 
   @override

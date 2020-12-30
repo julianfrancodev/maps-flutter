@@ -17,9 +17,8 @@ void main(){
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Gps',
-        home: TestMarkerPage(),
-        // initialRoute: '/loading',
-        // routes: routes,
+        initialRoute: '/loading',
+        routes: routes,
       ),
     )
   );

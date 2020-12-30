@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mapbox_flutter/src/custom_markers/marker_destiny.dart';
-import 'package:mapbox_flutter/src/custom_markers/marker_start.dart';
+import 'package:mapbox_flutter/src/custom_markers/custom_markers.dart';
 
 class TestMarkerPage extends StatelessWidget {
   @override
@@ -12,8 +11,8 @@ class TestMarkerPage extends StatelessWidget {
         height: 150,
         color: Colors.red,
         child: CustomPaint(
-          // painter: MarkerStart(22),
-          painter: MarkerDestiny("Mi casa esta ubicada aqui en algun lugar", 250),
+          painter: MarkerStart(22),
+          // painter: MarkerDestiny("Mi casa esta ubicada aqui en algun lugar", 255),
         ),
       )),
     );

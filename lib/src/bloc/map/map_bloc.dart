@@ -107,22 +107,27 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     currentPolylines['my_route_destiny'] = this._myRouteDestiny;
 
     // Markers
-    final startIcon = await getNetWorkImageMarker();
+    // final startIcon = await getNetWorkImageMarker();
+    final startIcon = await getMarkerStartIcon(event.duration.toInt());
+
+    final icon = await getAssetImageMarker();
 
     final markerStart = new Marker(
+
         markerId: MarkerId("start"),
+        anchor: Offset(0.0, 1.0),
         icon: startIcon,
         position: event.routeCoords[0],
-        infoWindow: InfoWindow(
-            title: "Mi Ubicacion",
-            snippet:
-                "Duracion recorrido ${(event.duration / 60).floor()} Minutos",
-            onTap: () {
-              print("info window tap");
-            }));
+        // infoWindow: InfoWindow(
+        //     title: "Mi Ubicacion",
+        //     snippet:
+        //         "Duracion recorrido ${(event.duration / 60).floor()} Minutos",
+        //     onTap: () {
+        //       print("info window tap");
+        //     }),
+    );
 
     // Icon from start
-    final icon = await getAssetImageMarker();
 
     final markerEnd = new Marker(
         icon: icon,

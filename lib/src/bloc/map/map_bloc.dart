@@ -109,11 +109,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     // Markers
     // final startIcon = await getNetWorkImageMarker();
     final startIcon = await getMarkerStartIcon(event.duration.toInt());
+    final endIcon = await getMarkerDestinyIcon((event.distance/100), event.nameDestiny);
 
     final icon = await getAssetImageMarker();
 
     final markerStart = new Marker(
-
         markerId: MarkerId("start"),
         anchor: Offset(0.0, 1.0),
         icon: startIcon,
@@ -130,14 +130,15 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     // Icon from start
 
     final markerEnd = new Marker(
-        icon: icon,
-        infoWindow: InfoWindow(
-            title: event.nameDestiny,
-            snippet:
-                "Distancia estimada de ${(event.distance / 100).floor()} Kilometros",
-            onTap: () {
-              print("info window disctance tap");
-            }),
+        anchor: Offset(0.0, 1.0),
+        icon: endIcon,
+        // infoWindow: InfoWindow(
+        //     title: event.nameDestiny,
+        //     snippet:
+        //         "Distancia estimada de ${(event.distance / 100).floor()} Kilometros",
+        //     onTap: () {
+        //       print("info window disctance tap");
+        //     }),
         markerId: MarkerId("end"),
         position: event.routeCoords[event.routeCoords.length - 1]);
     final newMarkers = {...state.markers};

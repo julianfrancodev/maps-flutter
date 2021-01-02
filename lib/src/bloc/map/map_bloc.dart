@@ -107,7 +107,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     currentPolylines['my_route_destiny'] = this._myRouteDestiny;
 
     // Markers
-    // final startIcon = await getNetWorkImageMarker();
     final startIcon = await getMarkerStartIcon(event.duration.toInt());
     final endIcon = await getMarkerDestinyIcon((event.distance/100), event.nameDestiny);
 
